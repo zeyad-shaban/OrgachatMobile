@@ -1,0 +1,15 @@
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+
+import FriendsScreen from '../Screens/FriendsScreen';
+import ChatScreen from '../Screens/ChatScreen';
+
+const Stack = createStackNavigator();
+
+const FriendsNavigator = () => (
+    <Stack.Navigator initialRouteName="Friends">
+        <Stack.Screen name="Friends" component={FriendsScreen} options={{ headerShown: false }} />
+        <Stack.Screen name="Chat" component={ChatScreen} />
+    </Stack.Navigator>
+);
+export default FriendsNavigator;
