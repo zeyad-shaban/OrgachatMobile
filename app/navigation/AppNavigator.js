@@ -29,7 +29,7 @@ const AppNavigator = () => (
         initialRouteName="Friends"
         tabBarOptions={{
             activeTintColor: colors.primary,
-            inactiveTintColor: colors.light,
+            inactiveTintColor: colors.medium,
         }}
     >
         <Tab.Screen

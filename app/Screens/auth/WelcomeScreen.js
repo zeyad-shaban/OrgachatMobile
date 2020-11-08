@@ -9,7 +9,7 @@ import AppButton from '../../components/Button';
 import BigHeader from '../../components/text/BigHeader';
 
 const validationSchema = Yup.object().shape({
-    phonenumber: Yup.number().min(6).max(19),
+    phonenumber: Yup.string().min(6).max(19),
 })
 
 export default function WelcomeScreen({ navigation }) {
