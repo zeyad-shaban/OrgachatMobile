@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 import ChatItem from '../components/ChatItem';
+import BottomButton from '../components/BottomButton';
 import Separator from '../components/Separator';
 
 import AppText from '../components/text/Text'
@@ -58,8 +59,6 @@ let messages = [
         // todo add file attachment
     },
 ]
-
-
 let initialChats = [
     {
         id: 1,
@@ -85,14 +84,18 @@ let initialChats = [
 export default function FriendsScreen({ navigation }) {
     const [chats, setChats] = useState(() => { return initialChats })
     return (
-        <FlatList
-            data={chats}
-            keyExtractor={chat => chat.id}
-            ItemSeparatorComponent={() => (<Separator />)}
-            renderItem={({ item }) => (
-                <ChatItem chat={item} onPress={() => navigation.navigate("Chat", item)} />
-            )}
-        />
+        <>
+            <FlatList
+                data={chats}
+                keyExtractor={chat => chat.id}
+                ItemSeparatorComponent={() => (<Separator />)}
+                renderItem={({ item }) => (
+                    <ChatItem chat={item} onPress={() => navigation.navigate("Chat", item)} />
+                )}
+            />
+            <BottomButton name="account-plus" onPress={() => navigation.navigate("AddChats")}>
+            </BottomButton>
+        </>
     );
 };
 
