@@ -1,36 +1,25 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Button, StyleSheet } from 'react-native';
-import * as Contacts from 'expo-contacts'
 
-import ListingItem from '../components/lists/ListingItem';
+import ListItem from '../components/lists/ListItem';
 import AppText from '../components/text/Text';
 import colors from '../config/colors';
+import useContacts from '../hooks/useContacts';
 
-const initalContacts = []
-export default function AddChatsScreen(props) {
-    // todo not getting contacts
-    const [contacts, setContacts] = useState(() => { return initalContacts });
-    const [granted, setGranted] = useState(false);
-    const askContactsPerm = async () => {
-        const { granted } = await Contacts.requestPermissionsAsync();
-        setGranted(granted);
-    }
-    useEffect(() => {
-        askContactsPerm();
-    }, [])
+export default function AddChatsScreen({ navigation }) {
+    const { contacts, granted, askContactsPerm } = useContacts();
     return (
         <>
-            <ListingItem iconName="share-variant" onPress={() => alert("Beta, under developing, todo")}>Invite a friend</ListingItem>
-            <ListingItem iconName="account-search" backgroundColor={colors.secondary} onPress={() => alert("Beta, under developing, todo")}>Search all users</ListingItem>
+            <ListItem iconName="share-variant" onPress={() => alert("Beta, under developing, todo")} title="Invite a friend" backgroundColor={colors.primary} />
+            <ListItem iconName="account-search" backgroundColor={colors.secondary} onPress={() => navigation.navigate('Users')} title="Search all users" />
             <AppText />
             {contacts.length > 0 ?
-                <AppText>You have some contacts</AppText>
+                <AppText>You have some contacts, we will show them!</AppText>
                 :
                 <>
                     {granted ?
                         <>
-                            <AppText>None of your contacts uses Orgachat.</AppText>
-                            <AppText>Click on Invite a friend.</AppText>
+                            <AppText>None of your contacts is using Orgachat.</AppText>
                         </>
                         :
                         <>

@@ -8,7 +8,7 @@ export default function BottomButton({ name, onPress }) {
     return (
         <TouchableWithoutFeedback onPress={onPress}>
             <View style={styles.icon}>
-                <Icon name={name} size={40} />
+                <Icon name={name} size={60} backgroundColor={colors.primary} />
             </View>
         </TouchableWithoutFeedback>
     );
@@ -17,7 +17,7 @@ export default function BottomButton({ name, onPress }) {
 const styles = StyleSheet.create({
     icon: {
         position: "absolute",
-        right: 20,
-        bottom: 20,
+        right: 10,
+        bottom: 10,
     },
 });

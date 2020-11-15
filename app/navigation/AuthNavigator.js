@@ -1,14 +1,14 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
-import WelcomeScreen from '../Screens/auth/WelcomeScreen'
-import ValidatePhoneNumberScreen from '../Screens/auth/ValidatePhoneNumberScreen';
+import RegisterScreen from '../Screens/auth/RegisterScreen'
+import LoginScreen from '../Screens/auth/LoginScreen';
 
 const Stack = createStackNavigator();
 const AuthNavigator = () => (
     <Stack.Navigator>
-        <Stack.Screen name="Welcome" component={WelcomeScreen} options={{headerShown: false}} />
-        <Stack.Screen name="ValidatePhoneNumber" component={ValidatePhoneNumberScreen} options={{title: "Validate phone number"}} />
+        <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown: false}} />
+        <Stack.Screen name="Login" component={LoginScreen} options={{title: "Validate phone number"}} />
     </Stack.Navigator>
 )
 

@@ -3,10 +3,11 @@ import { StyleSheet, View } from 'react-native';
 import AppText from '../components/text/Text';
 
 export default function ChatScreen({ route }) {
-    const chat = route.params;
+    const chat = route.params.chat;
+    const messages = route.params.messages;
+    const type = chat.type
     return (
         <View>
-            <AppText>{ chat.friend.username }</AppText>
         </View>
     );
 }

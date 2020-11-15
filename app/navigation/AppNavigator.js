@@ -5,20 +5,11 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import colors from '../config/colors'
 import FriendsNavigator from './FriendsNavigator';
+import AccountScreen from '../Screens/AccountScreen';
 
 function GroupsScreen() {
     return (
         <Text>Groups screen</Text>
-    )
-}
-function FriendsScreen() {
-    return (
-        <Text>Friends Screen</Text>
-    )
-}
-function AccountScreen() {
-    return (
-        <Text>Account Screen</Text>
     )
 }
 

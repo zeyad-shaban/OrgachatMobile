@@ -1,20 +1,26 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { StyleSheet, View } from 'react-native';
+
 import SmallText from '../../components/text/SmallText';
 import AppTextInput from '../../components/inputs/TextInput'
 import Separator from '../../components/Separator'
+import ErrorMessage from '../../components/forms/ErrorMessage';
+import ActivityIndicator from '../../components/ActivityIndicator';
+import useAuth from '../../hooks/useAuth';
 
-export default function ValidatePhoneNumberScreen({ navigation, route }) {
+export default function LoginScreen({ route }) {
     const phoneNumber = route.params.phoneNumber;
-    const [code, setCode] = useState(() => { return "" });
-    const codeUpdated = code => {
-        setCode(code);
+    const { loading, isInvalid, setIsInvalid, login } = useAuth();
+    const codeUpdated = async code => {
+        setIsInvalid(false);
         if (code.length >= 6) {
-            // todo Submit to validate
+            login(phoneNumber, code)
         }
     }
     return (
         <>
+            <ActivityIndicator animating={loading} />
+            <ErrorMessage error="Invalid code" visible={isInvalid} />
             <View style={styles.container}>
                 <SmallText>Check your SMS for validation code.</SmallText>
                 <SmallText>{phoneNumber}</SmallText>
