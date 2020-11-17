@@ -9,14 +9,14 @@ import useApi from '../hooks/useApi';
 import chatApi from '../api/chat';
 
 export default function UsersScreen({ navigation }) {
-    const { data: users, loading } = useApi(usersApi.getUsers);
+    const { data: users, loading, setLoading } = useApi(usersApi.getUsers);
 
     const handlePress = async item => {
+        setLoading(true);
         const response = await chatApi.getChat({ friendId: item.id, type: "friend" });
-        console.log(response.data)
+        setLoading(false);
         if (!response.ok) return alert("Error occured")
-        
-        navigation.navigate("Chat", {chat: JSON.parse(response.data.chat)[0], messages: response.data.messages})
+        navigation.navigate("Chat", { chat: response.data.chat, messages: response.data.messages })
     };
 
     return (
@@ -25,8 +25,8 @@ export default function UsersScreen({ navigation }) {
             <FlatList
                 data={users}
                 ItemSeparatorComponent={Separator}
-                keyExtractor={item => item.id}
-                renderItem={({ item }) => <ListItem title={item.username} subTitle={item.about} imageUri={item.avatar} onPress={() => handlePress(item)} />}
+                keyExtractor={item => JSON.stringify(item.id)}
+                renderItem={({ item }) => <ListItem title={item.username} subTitle={item.about} imageUri={"https://www.orgachat.com" + item.avatar} onPress={() => handlePress(item)} />}
             />
         </>
 

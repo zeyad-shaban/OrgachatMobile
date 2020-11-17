@@ -6,13 +6,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import colors from '../config/colors'
 import FriendsNavigator from './FriendsNavigator';
 import AccountScreen from '../Screens/AccountScreen';
-
-function GroupsScreen() {
-    return (
-        <Text>Groups screen</Text>
-    )
-}
-
+import GroupsNavigator from './GroupsNavigator';
 
 const Tab = createBottomTabNavigator();
 const AppNavigator = () => (
@@ -25,7 +19,7 @@ const AppNavigator = () => (
     >
         <Tab.Screen
             name="Groups"
-            component={GroupsScreen}
+            component={GroupsNavigator}
             options={{
                 tabBarIcon: ({ size, color }) => <MaterialCommunityIcons name="account-group" size={size} color={color} />
             }}

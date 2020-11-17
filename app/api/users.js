@@ -1,6 +1,6 @@
 import client from './client';
 
-const endpoint = '/users/all';
+const endpoint = '/users/all/';
 
 const getUsers = () => { return client.get(endpoint); };
 

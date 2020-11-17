@@ -9,7 +9,7 @@ import ListItem from '../components/lists/ListItem';
 import ActivityIndicator from '../components/ActivityIndicator';
 
 export default function FriendsScreen({ navigation }) {
-    const { data: chats, loading, error, } = useApi(chatApi.getFriendChats);
+    const { data: chats, loading, error, } = useApi(chatApi.getGroupChats);
     return (
         <>
             <ActivityIndicator animating={loading} />
@@ -26,8 +26,8 @@ export default function FriendsScreen({ navigation }) {
                     />
                 )}
             />
-            <BottomButton name="account-plus" onPress={() => navigation.navigate("AddChats")}>
+            <BottomButton name="plus" onPress={() => navigation.navigate("AddGroup")}>
             </BottomButton>
         </>
     );
-};
+}

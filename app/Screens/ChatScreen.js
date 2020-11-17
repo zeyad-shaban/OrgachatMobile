@@ -1,17 +1,79 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import AppText from '../components/text/Text';
+import React, { useEffect, useState } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
+import SendMessage from '../components/chat/SendMessage';
+import Text from '../components/text/Text';
+import Message from '../components/chat/Message';
+import useAuth from '../hooks/useAuth';
+import colors from '../config/colors';
 
 export default function ChatScreen({ route }) {
+    const [text, setText] = useState("");
     const chat = route.params.chat;
-    const messages = route.params.messages;
-    const type = chat.type
+    const [messages, setMessages] = useState(chat.messages);
+    const { user } = useAuth();
+
+
+    const chatSocket = new WebSocket(
+        // todo DELETE USERID
+        `ws://10.0.3.2:8000/ws/chat/${chat.id}/?userId=${user.user_id}`,
+    );
+    useEffect(() => {
+        chatSocket.onmessage = e => {
+            const data = JSON.parse(e.data);
+            var lastMessageId = 0
+            if (messages.length > 0) return lastMessageId = messages[messages.length - 1].id + 1
+            const message = {
+                "id": lastMessageId,
+                "area": null,
+                "chat": chat.id,
+                "is_deleted": false,
+                "is_read": false,
+                "content": data.message.content,
+                "isText": data.message.isText,
+                "user": user,
+                "video": "",
+            };
+            setMessages([...messages, message])
+        };
+    }, [])
+
+
+    const handleSubmit = () => {
+        chatSocket.send(JSON.stringify({
+            text: text
+        }));
+        setText("")
+    };
     return (
-        <View>
+        <View style={styles.container}>
+            {chat.type == "group" && <></>}
+            <View style={styles.messagesContainer}>
+                <FlatList
+                    data={messages}
+                    keyExtractor={item => JSON.stringify(item.id)}
+                    renderItem={({ item }) => (
+                        <Message sender={item.user} area={item.area} type={chat.type}>{item.isText ? <Text>{item.content}</Text> : <></>}</Message>
+                    )}
+                />
+            </View>
+            <View style={styles.inputContainer}>
+                <SendMessage text={text} setText={setText} handleSubmit={handleSubmit} />
+            </View>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    
+    container: {
+        backgroundColor: colors.semiMedium,
+        flex: 1,
+    },
+    messagesContainer: {
+        marginBottom: 50,
+    },
+    inputContainer: {
+        position: "absolute",
+        bottom: 0,
+        width: "100%"
+    },
 })

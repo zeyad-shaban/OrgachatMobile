@@ -10,7 +10,7 @@ export default function AddChatsScreen({ navigation }) {
     const { contacts, granted, askContactsPerm } = useContacts();
     return (
         <>
-            <ListItem iconName="share-variant" onPress={() => alert("Beta, under developing, todo")} title="Invite a friend" backgroundColor={colors.primary} />
+            <ListItem iconName="share-variant" onPress={() => alert("Sorry, this button is not working for now. Beta:Todo")} title="Invite a friend" backgroundColor={colors.primary} />
             <ListItem iconName="account-search" backgroundColor={colors.secondary} onPress={() => navigation.navigate('Users')} title="Search all users" />
             <AppText />
             {contacts.length > 0 ?

@@ -14,8 +14,7 @@ const useApi = apiFunc => {
         setData(response.data);
     };
     useEffect(() => { fetchData() }, []);
-
-    return { data, setData, error, loading };
+    return { data, setData, error, loading, setLoading };
 };
 
 export default useApi;

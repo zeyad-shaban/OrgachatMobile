@@ -2,8 +2,7 @@ import { create } from 'apisauce';
 import authStorage from '../auth/storage';
 
 const apiClient = create({
-    baseURL: 'https://orgachat.pythonanywhere.com',
-    // baseURL: 'https://www.orgachat.com',
+    baseURL: 'http://10.0.3.2:8000',
 });
 
 apiClient.addAsyncRequestTransform(async request => {

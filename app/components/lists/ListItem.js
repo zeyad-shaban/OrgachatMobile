@@ -1,7 +1,6 @@
 import React from 'react';
 import { StyleSheet, TouchableHighlight, View } from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { Image } from 'react-native-expo-image-cache';
 
 import colors from '../../config/colors';
