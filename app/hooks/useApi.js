@@ -1,13 +1,13 @@
 import { useEffect, useState } from "react";
 
-const useApi = apiFunc => {
+const useApi = (apiFunc, funcParams=null) => {
     const [data, setData] = useState([]);
     const [error, setError] = useState(false);
     const [loading, setLoading] = useState(false);
 
     const fetchData = async () => {
         setLoading(true);
-        const response = await apiFunc();
+        const response = await apiFunc(funcParams);
         setLoading(false);
 
         if (!response.ok) return setError(true);

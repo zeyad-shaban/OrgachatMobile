@@ -6,7 +6,7 @@ import authApi from '../api/auth'
 
 export default function useAuth() {
     const { user, setUser } = useContext(AuthContext);
-    user.id = user.user_id
+    if (user) user.id = user.user_id;
 
     const [loading, setLoading] = useState(false);
     const [isInvalid, setIsInvalid] = useState(false);
