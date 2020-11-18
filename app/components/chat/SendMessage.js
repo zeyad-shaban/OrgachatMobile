@@ -5,10 +5,10 @@ import Icon from '../Icon';
 
 import TextInput from '../inputs/TextInput';
 
-export default function SendMessage({ handleSubmit, text, setText }) {
+export default function SendMessage({ handleSubmit, text, setText, placeholder }) {
     return (
         <View style={styles.container}>
-            <TextInput placeholder="Write your message."
+            <TextInput placeholder={placeholder}
                 style={styles.textInput}
                 multiline={true}
                 numberOfLines={4}

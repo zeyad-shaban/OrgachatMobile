@@ -14,11 +14,11 @@ import ActivityIndicator from '../components/ActivityIndicator';
 export default function ChatScreen({ route }) {
     const { user } = useAuth();
     const { data: chat, loading } = useApi(chatApi.getChat, { chatId: route.params.chat.id, channelId: route.params.channelId });
-    var messages = chat.messages
-
     const [text, setText] = useState("");
     const [optionsVisible, setOptionsVisible] = useState(false);
-
+    
+    
+    var messages = chat.messages
     // Web Socket connection, and sending messages
     const chatSocket = new WebSocket(
         // todo DELETE USERID
@@ -45,9 +45,11 @@ export default function ChatScreen({ route }) {
         };
     }, [])
 
+    
     const handleSubmit = () => {
         chatSocket.send(JSON.stringify({
-            text: text
+            text: text,
+            channelId: chat.channel.id,
         }));
         setText("");
     };
@@ -69,7 +71,7 @@ export default function ChatScreen({ route }) {
                     />
                 </View>
                 <View style={styles.inputContainer}>
-                    <SendMessage text={text} setText={setText} handleSubmit={handleSubmit} />
+                    <SendMessage text={text} setText={setText} handleSubmit={handleSubmit} placeholder={chat.channel ? `#${chat.channel.title} channel` : "Write your message"} />
                 </View>
             </View>
         </>
