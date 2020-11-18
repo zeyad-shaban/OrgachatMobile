@@ -6,14 +6,18 @@ import Message from '../components/chat/Message';
 import useAuth from '../hooks/useAuth';
 import colors from '../config/colors';
 import ChatHeader from '../components/chat/ChatHeader';
-
+import useApi from '../hooks/useApi';
+import GroupOptionsScreen from './GroupOptionsScreen';
+import chatApi from '../api/chat';
+import ActivityIndicator from '../components/ActivityIndicator';
 
 export default function ChatScreen({ route }) {
-    const chat = route.params.chat;
+    const { user } = useAuth();
+    const { data: chat, loading } = useApi(chatApi.getChat, { chatId: route.params.chat.id });
+    var messages = chat.messages
 
     const [text, setText] = useState("");
-    const [messages, setMessages] = useState(chat.messages);
-    const { user } = useAuth();
+    const [optionsVisible, setOptionsVisible] = useState(false);
 
     // Web Socket connection, and sending messages
     const chatSocket = new WebSocket(
@@ -22,21 +26,22 @@ export default function ChatScreen({ route }) {
     );
     useEffect(() => {
         chatSocket.onmessage = e => {
-            const data = JSON.parse(e.data);
-            var lastMessageId = 0
-            if (messages.length > 0) return lastMessageId = messages[messages.length - 1].id + 1
-            const message = {
-                "id": lastMessageId,
-                "channel": null,
-                "chat": chat.id,
-                "is_deleted": false,
-                "is_read": false,
-                "content": data.message.content,
-                "isText": data.message.isText,
-                "user": user,
-                "video": "",
-            };
-            setMessages([...messages, message])
+            // todo show new messages onmessage
+            // const data = JSON.parse(e.data);
+            // var lastMessageId = 0
+            // if (messages.length > 0) return lastMessageId = messages[messages.length - 1].id + 1
+            // const message = {
+            //     "id": lastMessageId,
+            //     "channel": null,
+            //     "chat": chat.id,
+            //     "is_deleted": false,
+            //     "is_read": false,
+            //     "content": data.message.content,
+            //     "isText": data.message.isText,
+            //     "user": user,
+            //     "video": "",
+            // };
+            // setMessages([...messages, message])
         };
     }, [])
 
@@ -49,9 +54,11 @@ export default function ChatScreen({ route }) {
 
     return (
         <>
+            {chat.type == 'group' && <GroupOptionsScreen visible={optionsVisible} setVisible={setOptionsVisible} chat={chat} />}
             <View style={styles.container}>
-                <ChatHeader title={chat.title} imageUri={"https://www.orgachat.com" + chat.imageUri} />
+                <ChatHeader title={chat.title} imageUri={"https://www.orgachat.com" + chat.imageUri} onPress={chat.type == 'group' ? () => setOptionsVisible(true) : null} />
                 <View style={styles.messagesContainer}>
+                    <ActivityIndicator animating={loading} />
                     {/* // todo start from bottom instead of top */}
                     <FlatList
                         data={messages}
@@ -80,6 +87,6 @@ const styles = StyleSheet.create({
     inputContainer: {
         position: "absolute",
         bottom: 0,
-        width: "100%"
+        width: "100%",
     },
-})
+});

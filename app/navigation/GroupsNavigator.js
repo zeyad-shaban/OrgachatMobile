@@ -8,7 +8,6 @@ const Stack = createStackNavigator();
 const GroupsNavigator = () => (
     <Stack.Navigator initialRouteName="Groups" screenOptions={{ animationEnabled: false }}>
         <Stack.Screen name="Groups" component={GroupsScreen} options={{ headerShown: false, }} />
-        <Stack.Screen name="Chat" component={Chat} options={{ headerShown: false }} />
         <Stack.Screen name="AddGroup" component={AddGroupScreen} options={{
             title: "Add a Group"
         }} />

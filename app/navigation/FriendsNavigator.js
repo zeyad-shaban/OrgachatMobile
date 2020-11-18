@@ -10,12 +10,13 @@ import { getFocusedRouteNameFromRoute } from '@react-navigation/native';
 const Stack = createStackNavigator();
 
 const FriendsNavigator = ({ navigation, route }) => {
-    const routeName = getFocusedRouteNameFromRoute(route) ?? 'Auth';
-    useEffect(() => {
-        navigation.setOptions({
-            tabBarVisible: ['Friends', 'Groups', 'Account'].includes(routeName),
-        });
-    }, [navigation, routeName]);
+    // const routeName = getFocusedRouteNameFromRoute(route) ?? 'Auth';
+    // // todo fix "Auth" routeName when refresh
+    // useEffect(() => {
+    //     navigation.setOptions({
+    //         tabBarVisible: ['Friends', 'Groups', 'Account'].includes(routeName),
+    //     });
+    // }, [navigation, routeName]);
 
     return (
         <Stack.Navigator initialRouteName="Friends" screenOptions={{ animationEnabled: false }}>

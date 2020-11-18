@@ -6,6 +6,7 @@ import IconButton from '../components/IconButton';
 import chatApi from '../api/chat'
 import TextInput from '../components/inputs/TextInput';
 import ErrorMessage from '../components/forms/ErrorMessage';
+import colors from '../config/colors';
 
 export default function AddGroupScreen({ navigation }) {
     const [title, setTitle] = useState("");
@@ -24,7 +25,7 @@ export default function AddGroupScreen({ navigation }) {
     return (
         <View style={styles.container}>
             <TextInput value={title} onChangeText={text => setTitle(text)} placeholder="Group title" width="70%" maxLength={50} />
-            <IconButton name="plus" backgroundColor="green" onPress={handleSubmit} />
+            <IconButton name="plus" backgroundColor={colors.primary} onPress={handleSubmit} />
             <ActivityIndicator animating={loading} />
             <ErrorMessage error="Failed to create group, please try again later" visible={error} />
         </View>

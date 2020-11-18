@@ -10,6 +10,8 @@ export default function SendMessage({ handleSubmit, text, setText }) {
         <View style={styles.container}>
             <TextInput placeholder="Write your message."
                 style={styles.textInput}
+                multiline={true}
+                numberOfLines={4}
                 width="80%"
                 onChangeText={text => setText(text)}
                 value={text}
