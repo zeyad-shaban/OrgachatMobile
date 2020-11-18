@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FlatList, Modal, StyleSheet, View } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 import IconButton from '../components/IconButton';
 import TextInput from '../components/inputs/TextInput';
@@ -9,13 +10,12 @@ import Button from '../components/Button';
 import colors from '../config/colors';
 import chatApi from '../api/chat';
 import ListItem from '../components/lists/ListItem';
-import SwipeItem from '../components/SwipeItem';
 
 export default function GroupOptionsScreen({ visible, setVisible, chat }) {
+    const navigation = useNavigation();
     const [channelTitle, setChannelTitle] = useState("")
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(false)
-
 
     const handleSaveChannel = async () => {
         setLoading(true);
@@ -39,7 +39,7 @@ export default function GroupOptionsScreen({ visible, setVisible, chat }) {
                 data={chat.channels}
                 keyExtractor={item => JSON.stringify(item.id)}
                 renderItem={({ item }) => (
-                    <ListItem title={`#${item.title}`} />
+                    <ListItem title={`#${item.title}`} onPress={() => { setVisible(false); return navigation.push('Chat', { chat, channelId: item.id }) }} />
                 )}
             />
         </Modal>

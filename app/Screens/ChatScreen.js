@@ -13,7 +13,7 @@ import ActivityIndicator from '../components/ActivityIndicator';
 
 export default function ChatScreen({ route }) {
     const { user } = useAuth();
-    const { data: chat, loading } = useApi(chatApi.getChat, { chatId: route.params.chat.id });
+    const { data: chat, loading } = useApi(chatApi.getChat, { chatId: route.params.chat.id, channelId: route.params.channelId });
     var messages = chat.messages
 
     const [text, setText] = useState("");
@@ -22,7 +22,7 @@ export default function ChatScreen({ route }) {
     // Web Socket connection, and sending messages
     const chatSocket = new WebSocket(
         // todo DELETE USERID
-        `ws://10.0.3.2:8000/ws/chat/${chat.id}/?userId=${user.user_id}`,
+        `ws://10.0.3.2:8000/ws/chat/${chat.id}/?userId=${user.id}`,
     );
     useEffect(() => {
         chatSocket.onmessage = e => {

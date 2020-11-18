@@ -3,8 +3,8 @@ import client from './client';
 
 // General
 const createFriendChat = (friendId) => client.post("/chat/create_chat/", { friendId: friendId.friendId });
-const sendMessage = (text, chatId) => client.post("/chat/send_text_message", { text, chatId });
-const getChat = ({ chatId }) => client.get(`/chat/get_chat/${chatId}/`)
+const sendMessage = (text, chatId) => client.post("/chat/send_text_message/", { text, chatId });
+const getChat = ({ chatId, channelId }) => client.get(`/chat/get_chat/${chatId}/?channelId=${channelId}`);
 // Friends
 const getFriendChats = () => client.get("/chat/friends/");
 
