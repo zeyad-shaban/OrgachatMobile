@@ -14,17 +14,23 @@ import GroupSettingsScreen from './GroupSettingsScreen';
 
 export default function GroupOptionsScreen({ visible, setVisible, chat }) {
     const navigation = useNavigation();
-    const [channelTitle, setChannelTitle] = useState("")
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(false)
+    const [channels, setChannels] = useState(chat.channels)
+    const [channelTitle, setChannelTitle] = useState("");
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(false);
 
     const handleSaveChannel = async () => {
+        setError(false);
         setLoading(true);
         const response = await chatApi.createChannel(channelTitle, chat.id);
         setLoading(false);
         if (!response.ok) return setError(true);
-        setError(false)
-        // todo fix need to refresh to see new channel (CONTEXT)
+        setError(false);
+        const channel = {
+            id: channels && channels.length > 0 ? channels[channels.length -1].id + 1 : 1,
+            title: channelTitle,
+        }
+        setChannels([channel, ...channels])
         return
     };
     return (
@@ -34,14 +40,14 @@ export default function GroupOptionsScreen({ visible, setVisible, chat }) {
             <View style={styles.container}>
                 <TextInput value={channelTitle} onChangeText={text => setChannelTitle(text)} placeholder="Add a channel" width="70%" maxLength={30} />
                 <IconButton name="plus" backgroundColor={colors.primary} onPress={handleSaveChannel} />
-                <ActivityIndicator animating={loading} />
-                <ErrorMessage error="Failed to create channel, please try again or report the problem" visible={error} />
             </View>
+            <ActivityIndicator animating={loading} />
+            <ErrorMessage error="Failed to create channel, please try again or report the problem" visible={error} />
             <FlatList
-                data={chat.channels}
+                data={channels}
                 keyExtractor={item => JSON.stringify(item.id)}
                 renderItem={({ item }) => (
-                    <ListItem title={`#${item.title}`} onPress={() => { setVisible(false); return navigation.push('Chat', { chat, channelId: item.id }) }} />
+                    <ListItem title={`#${item.title}`} onPress={() => { setVisible(false); return navigation.push('Chat', { chat, channelId: item.id }); }} />
                 )}
             />
         </Modal>
