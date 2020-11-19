@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text, View } from 'react-native';
+import { Alert, Text, View } from 'react-native';
 
 import ListCard from '../components/lists/ListCard';
 import ListItem from '../components/lists/ListItem';
@@ -10,6 +10,18 @@ import Separator from '../components/Separator';
 
 export default function AccountScreen({ navigation }) {
     const { user, logout } = useAuth();
+
+    const handleLogout = () => {
+        Alert.alert("Logout", "Are you sure you want to logout?", [
+            {
+                text: "Yes",
+                onPress: logout,
+            },
+            {
+                text: "No, keep me signed in",
+            },
+        ])
+    }
     return (
         <>
             <Text />
@@ -17,7 +29,7 @@ export default function AccountScreen({ navigation }) {
                 <ListItem title={user.username} subTitle={user.about} imageUri={`https://www.orgachat.com${user.avatarUri}`} onPress={() => navigation.navigate('EditAccount')} />
             </ListCard>
             <View>
-                <ListCard>
+                {/* <ListCard>
                     <ListItem
                         title="My Listings"
                         ImageComponent={<Icon name="format-list-bulleted"
@@ -31,10 +43,10 @@ export default function AccountScreen({ navigation }) {
                         ImageComponent={<Icon name="email" backgroundColor={colors.secondary} />}
                         onPress={() => navigation.navigate("Messages")}
                     />
-                </ListCard>
+                </ListCard> */}
             </View>
             <ListCard>
-                <ListItem title="Log Out" ImageComponent={<Icon name="logout" backgroundColor="#ffe66d" />} onPress={logout} />
+                <ListItem title="Log Out" ImageComponent={<Icon name="logout" backgroundColor="#ffe66d" />} onPress={handleLogout} />
             </ListCard>
         </>
     );
