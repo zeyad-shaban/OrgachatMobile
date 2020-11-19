@@ -14,7 +14,7 @@ export default function AccountScreen({ navigation }) {
         <>
             <Text />
             <ListCard>
-                <ListItem title={user.username} subTitle={user.about} imageUri={`https://www.orgachat.com${user.avatarUri}`} />
+                <ListItem title={user.username} subTitle={user.about} imageUri={`https://www.orgachat.com${user.avatarUri}`} onPress={() => navigation.navigate('EditAccount')} />
             </ListCard>
             <View>
                 <ListCard>

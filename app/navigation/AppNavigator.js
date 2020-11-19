@@ -1,12 +1,11 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Text } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import colors from '../config/colors'
 import FriendsNavigator from './FriendsNavigator';
-import AccountScreen from '../Screens/AccountScreen';
 import GroupsNavigator from './GroupsNavigator';
+import AccountNavigator from "./AccountNavigator";
 
 const Tab = createBottomTabNavigator();
 const AppNavigator = () => (
@@ -32,10 +31,11 @@ const AppNavigator = () => (
             }}
         />
         <Tab.Screen
-            name="Account"
-            component={AccountScreen}
+            name="AccountNavigator"
+            component={AccountNavigator}
             options={{
-                tabBarIcon: ({ size, color }) => <MaterialCommunityIcons name="account-circle" size={size} color={color} />
+                tabBarIcon: ({ size, color }) => <MaterialCommunityIcons name="account-circle" size={size} color={color} />,
+                title: "Account",
             }}
         />
     </Tab.Navigator>
