@@ -7,49 +7,30 @@ import useAuth from '../hooks/useAuth';
 import colors from '../config/colors';
 import ChatHeader from '../components/chat/ChatHeader';
 import useApi from '../hooks/useApi';
-import GroupOptionsScreen from './GroupOptionsScreen';
+import GroupOptionsScreen from './groups/GroupOptionsScreen';
 import chatApi from '../api/chat';
 import ActivityIndicator from '../components/ActivityIndicator';
 
 export default function ChatScreen({ route }) {
     const { user } = useAuth();
     const { data: chat, loading } = useApi(chatApi.getChat, { chatId: route.params.chat.id, channelId: route.params.channelId });
-    const [text, setText] = useState("");
-    const [optionsVisible, setOptionsVisible] = useState(false);
-    
-    
-    var messages = chat.messages
-    // Web Socket connection, and sending messages
-    const chatSocket = new WebSocket(
-        // todo DELETE USERID
-        `ws://10.0.3.2:8000/ws/chat/${chat.id}/?userId=${user.id}`,
-    );
+    const [text, setText] = useState(() => { return "" });
+    const [optionsVisible, setOptionsVisible] = useState(() => false);
+    const [chatSocket, setChatSocket] = useState(new WebSocket(`ws://10.0.3.2:8000/ws/chat/${chat.id}/?userId=${user.id}`))
+    const [messages, setMessages] = useState(() => chat.messages)
     useEffect(() => {
-        chatSocket.onmessage = e => {
-            // todo show new messages onmessage
-            // const data = JSON.parse(e.data);
-            // var lastMessageId = 0
-            // if (messages.length > 0) return lastMessageId = messages[messages.length - 1].id + 1
-            // const message = {
-            //     "id": lastMessageId,
-            //     "channel": null,
-            //     "chat": chat.id,
-            //     "is_deleted": false,
-            //     "is_read": false,
-            //     "content": data.message.content,
-            //     "isText": data.message.isText,
-            //     "user": user,
-            //     "video": "",
-            // };
-            // setMessages([...messages, message])
-        };
-    }, [])
-
-    
+        setChatSocket(new WebSocket(`ws://10.0.3.2:8000/ws/chat/${chat.id}/?userId=${user.id}`))
+        setMessages(chat.messages)
+    }, [chat])
+    chatSocket.onmessage = e => {
+        // todo show new messages onmessage
+        const data = JSON.parse(e.data);
+        setMessages([...messages, data.message])
+    };
     const handleSubmit = () => {
         chatSocket.send(JSON.stringify({
             text: text,
-            channelId: chat.channel.id,
+            channelId: chat.channel ? chat.channel.id: "undefined",
         }));
         setText("");
     };

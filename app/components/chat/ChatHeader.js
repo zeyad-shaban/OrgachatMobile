@@ -13,7 +13,7 @@ export default function ChatHeader({ title, subTitle, imageUri, onPress }) {
                 <MaterialCommunityIcons name="keyboard-backspace" style={styles.icon} color="white" size={30} />
             </TouchableWithoutFeedback>
             <TouchableWithoutFeedback onPress={onPress}>
-                <ListItem title={title} subTitle={subTitle} imageUri={imageUri} onPress={onPress} imageSize={45} textColor="white" />
+                <ListItem title={title} subTitle={subTitle} imageUri={imageUri} onPress={onPress} size={45} textColor="white" />
             </TouchableWithoutFeedback>
         </View>
     );

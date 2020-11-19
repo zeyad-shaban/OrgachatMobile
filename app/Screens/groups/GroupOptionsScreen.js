@@ -2,14 +2,15 @@ import React, { useState } from 'react';
 import { FlatList, Modal, StyleSheet, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-import IconButton from '../components/IconButton';
-import TextInput from '../components/inputs/TextInput';
-import ActivityIndicator from '../components/ActivityIndicator';
-import ErrorMessage from '../components/forms/ErrorMessage';
-import Button from '../components/Button';
-import colors from '../config/colors';
-import chatApi from '../api/chat';
-import ListItem from '../components/lists/ListItem';
+import IconButton from '../../components/IconButton';
+import TextInput from '../../components/inputs/TextInput';
+import ActivityIndicator from '../../components/ActivityIndicator';
+import ErrorMessage from '../../components/forms/ErrorMessage';
+import Button from '../../components/Button';
+import colors from '../../config/colors';
+import chatApi from '../../api/chat';
+import ListItem from '../../components/lists/ListItem';
+import GroupSettingsScreen from './GroupSettingsScreen';
 
 export default function GroupOptionsScreen({ visible, setVisible, chat }) {
     const navigation = useNavigation();
@@ -29,6 +30,7 @@ export default function GroupOptionsScreen({ visible, setVisible, chat }) {
     return (
         <Modal visible={visible} animationType="slide">
             <Button title="Close" onPress={() => setVisible(false)} />
+            <ListItem iconName="settings" title='Settings' onPress={() => navigation.navigate("GroupSettings", { chat })} />
             <View style={styles.container}>
                 <TextInput value={channelTitle} onChangeText={text => setChannelTitle(text)} placeholder="Add a channel" width="70%" maxLength={30} />
                 <IconButton name="plus" backgroundColor={colors.primary} onPress={handleSaveChannel} />

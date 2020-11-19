@@ -1,9 +1,9 @@
 import client from './client';
 
-const endpoint = '/users/all/';
-
-const getUsers = () => { return client.get(endpoint); };
+const getUsers = () => client.get('/users/all/');
+const getFriends = () => client.get('/users/friends/');
 
 export default {
     getUsers,
-}
+    getFriends,
+};

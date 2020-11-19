@@ -8,13 +8,13 @@ import Text from '../text/Text';
 import Icon from '../Icon';
 import SwipeItem from '../SwipeItem';
 
-export default function ListItem({ title, subTitle, imageUri, onPress, renderRightActions, renderLeftActions, ImageComponent, iconName, backgroundColor, imageSize = 60, textColor = "black" }) {
+export default function ListItem({ title, subTitle, imageUri, onPress, renderRightActions, renderLeftActions, ImageComponent, iconName, backgroundColor, size = 60, textColor = "black" }) {
     return (
         <Swipeable renderRightActions={renderRightActions} renderLeftActions={renderLeftActions}>
             <TouchableHighlight onPress={onPress} underlayColor={colors.light}>
                 <View style={styles.container}>
                     {ImageComponent}
-                    {imageUri && <Image uri={imageUri} preview={{ uri: imageUri }} tint="light" style={{ width: imageSize, height: imageSize, borderRadius: 200, marginRight: 10 }} />}
+                    {imageUri && <Image uri={imageUri} preview={{ uri: imageUri }} tint="light" style={{ width: size, height: size, borderRadius: 200, marginRight: 10 }} />}
                     {iconName && <Icon name={iconName} backgroundColor={backgroundColor} />}
                     <View style={styles.listText}>
                         <Text style={[styles.title, { color: textColor }]} numberOfLines={1}>{title}</Text>

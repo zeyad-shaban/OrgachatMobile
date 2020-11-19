@@ -11,4 +11,5 @@ export default Object.freeze({
     medium: "#6e6969",
     // Extras
     danger: "#EB3C51",
+    warning: "#F7D400",
 })

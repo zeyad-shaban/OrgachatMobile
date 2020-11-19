@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import ActivityIndicator from '../components/ActivityIndicator';
-import IconButton from '../components/IconButton';
-import chatApi from '../api/chat'
-import TextInput from '../components/inputs/TextInput';
-import ErrorMessage from '../components/forms/ErrorMessage';
-import colors from '../config/colors';
+import ActivityIndicator from '../../components/ActivityIndicator';
+import IconButton from '../../components/IconButton';
+import chatApi from '../../api/chat'
+import TextInput from '../../components/inputs/TextInput';
+import ErrorMessage from '../../components/forms/ErrorMessage';
+import colors from '../../config/colors';
 
 export default function AddGroupScreen({ navigation }) {
     const [title, setTitle] = useState("");

@@ -11,6 +11,7 @@ const getFriendChats = () => client.get("/chat/friends/");
 // Groups
 const getGroupChats = () => client.get("/chat/groups/");
 const createGroup = title => client.post("/chat/groups/", { title: title })
+const addMember = (userId=null, chatId) => client.post('/chat/add_member/', {userId, chatId})
 
 // Channels
 const createChannel = (title, chatId) => client.post(`/chat/groups/${chatId}/channels/create/`, { title })
@@ -23,6 +24,7 @@ export default {
     getFriendChats,
     getGroupChats,
     createGroup,
+    addMember,
     createChannel,
-    toggleMuteChannel
+    toggleMuteChannel,
 };
