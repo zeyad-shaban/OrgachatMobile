@@ -10,6 +10,7 @@ import useApi from '../hooks/useApi';
 import GroupOptionsScreen from './groups/GroupOptionsScreen';
 import chatApi from '../api/chat';
 import ActivityIndicator from '../components/ActivityIndicator';
+import settings from "../config/settings";
 
 export default function ChatScreen({ route }) {
     const { user } = useAuth();
@@ -19,7 +20,7 @@ export default function ChatScreen({ route }) {
     const [chatSocket, setChatSocket] = useState(new WebSocket(`ws://10.0.3.2:8000/ws/chat/${chat.id}/?userId=${user.id}`))
     const [messages, setMessages] = useState(() => chat.messages)
     useEffect(() => {
-        setChatSocket(new WebSocket(`ws://10.0.3.2:8000/ws/chat/${chat.id}/?userId=${user.id}`))
+        setChatSocket(new WebSocket(`${settings.wsUrl}chat/${chat.id}/?userId=${user.id}`))
         setMessages(chat.messages)
     }, [chat])
     chatSocket.onmessage = e => {
