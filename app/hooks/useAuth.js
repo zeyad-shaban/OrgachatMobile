@@ -11,18 +11,18 @@ export default function useAuth() {
     const [loading, setLoading] = useState(false);
     const [isInvalid, setIsInvalid] = useState(false);
 
-    const register = async (values, navigation) => {
+    const register = async (email, navigation) => {
         setLoading(true);
         setIsInvalid(false);
-        const response = await authApi.register(values.phoneNumber);
+        const response = await authApi.register(email);
         setLoading(false);
         if (!response.ok) return setIsInvalid(response.data.error);
-        navigation.navigate("Login", values);
+        navigation.navigate("Login", {email});
     };
 
-    const login = async (phoneNumber, code) => {
+    const login = async (email, code) => {
         setLoading(true);
-        const response = await authApi.login(phoneNumber, code);
+        const response = await authApi.login(email, code);
         setLoading(false);
         if (!response.ok) return setIsInvalid(true);
 

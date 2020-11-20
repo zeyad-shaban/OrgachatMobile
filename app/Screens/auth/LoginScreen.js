@@ -9,12 +9,12 @@ import ActivityIndicator from '../../components/ActivityIndicator';
 import useAuth from '../../hooks/useAuth';
 
 export default function LoginScreen({ route }) {
-    const phoneNumber = route.params.phoneNumber;
+    const email = route.params.email;
     const { loading, isInvalid, setIsInvalid, login } = useAuth();
     const codeUpdated = async code => {
         setIsInvalid(false);
         if (code.length >= 6) {
-            login(phoneNumber, code)
+            login(email, code)
         }
     }
     return (
@@ -23,7 +23,7 @@ export default function LoginScreen({ route }) {
             <ErrorMessage error="Invalid code" visible={isInvalid} />
             <View style={styles.container}>
                 <SmallText>Check your SMS for validation code.</SmallText>
-                <SmallText>{phoneNumber}</SmallText>
+                <SmallText>{email}</SmallText>
                 <Separator />
                 <AppTextInput placeholder="Six digit code" width="50%" onChangeText={codeUpdated} maxLength={6} style={styles.digitsInput} autoFocus keyboardType="number-pad" />
             </View>

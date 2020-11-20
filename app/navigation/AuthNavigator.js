@@ -8,7 +8,7 @@ const Stack = createStackNavigator();
 const AuthNavigator = () => (
     <Stack.Navigator>
         <Stack.Screen name="Register" component={RegisterScreen} options={{headerShown: false}} />
-        <Stack.Screen name="Login" component={LoginScreen} options={{title: "Validate phone number"}} />
+        <Stack.Screen name="Login" component={LoginScreen} options={{title: "Validate your email"}} />
     </Stack.Navigator>
 )
 

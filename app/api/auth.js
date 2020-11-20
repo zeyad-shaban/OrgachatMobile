@@ -1,7 +1,7 @@
 import client from './client';
 
-const login = (phone_number, phone_code) => client.post('/token/', { phone_number, password: phone_code })
-const register = phone_number => client.post('/register/', { phone_number, username: "", groups: [] });
+const login = (email, email_code) => client.post('/token/', { email, password: email_code })
+const register = email => client.post('/register/', { email, username: "", groups: [] });
 
 export default {
     register,
