@@ -18,7 +18,7 @@ export default function RegisterScreen({ navigation }) {
                 <Image source={require('../../assets/icon.png')} style={styles.image} />
                 <BigHeader>Orgachat</BigHeader>
             </View>
-            {isInvalid && <ErrorMessage error="Invalid phone number" visible={isInvalid} />}
+            {isInvalid && <ErrorMessage error={isInvalid} visible={isInvalid} />}
             { loading ? <ActivityIndicator animating={loading} />
                 :
                 <Formik

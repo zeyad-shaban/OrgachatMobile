@@ -23,7 +23,9 @@
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/adaptive-icon.png",
         "backgroundColor": "#3d5998"
-      }
+      },
+      "package": "com.orgachat",
+      "versionCode": 1
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
