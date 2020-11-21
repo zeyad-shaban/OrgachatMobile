@@ -7,12 +7,12 @@ const settings = {
     },
     staging: {
         apiUrl: "https://orgachat.herokuapp.com",
-        wsUrl: "ws://orgachat.herokuapp.com/ws/",
+        wsUrl: "wss://orgachat.herokuapp.com/ws/",
     },
     prod: {
         // todo change to orgachat.com after buying heroku subscription for 25$
         apiUrl: "https://orgachat.herokuapp.com",
-        wsUrl: "ws://orgachat.herokuapp.com/ws/",
+        wsUrl: "wss://orgachat.herokuapp.com/ws/",
     },
 };
 

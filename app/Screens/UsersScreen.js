@@ -13,7 +13,7 @@ export default function UsersScreen({ navigation }) {
 
     const handlePress = async item => {
         setLoading(true);
-        const response = await chatApi.createFriendChat({ friendId: item.id, type: "friend" });
+        const response = await chatApi.createFriendChat(item.id);
         setLoading(false);
         if (!response.ok) return alert("Error occured")
         navigation.navigate("Chat", { chat: response.data.chat })

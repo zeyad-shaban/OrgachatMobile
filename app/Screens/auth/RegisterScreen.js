@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Image, StyleSheet, View } from 'react-native';
-import { Formik } from 'formik';
+
 
 import Text from '../../components/text/Text';
 import AppButton from '../../components/Button';
@@ -25,7 +25,7 @@ export default function RegisterScreen({ navigation }) {
                 :
                 <>
                     <Text />
-                    <TextInput onChangeText={email => setEmail(email)} autoCompleteType="email" keyboardType="email-address" textContentType="emailAddress" placeholder="Email Address" />
+                    <TextInput onChangeText={email => setEmail(email)} autoCompleteType="email" keyboardType="email-address" textContentType="emailAddress" placeholder="Email Address" autoCapitalize="none" />
                     <Text />
                     <AppButton title="Continue" onPress={() => register(email, navigation)} />
                 </>
