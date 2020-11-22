@@ -1,5 +1,5 @@
 import React from 'react';
-import { FlatList } from 'react-native';
+import { Alert, FlatList } from 'react-native';
 
 import ChatHeader from '../../components/chat/ChatHeader';
 import ListItem from '../../components/lists/ListItem';
@@ -18,7 +18,7 @@ export default function AddMembersScreen({ route }) {
         const response = await chatApi.addMember({ userId: item.id, chatId: chat.id });
         setLoading(false);
         if (!response.ok) return alert("Error occured");
-        alert("Added");
+        Alert.alert("Added ", "It may take some time to show on your device");
     };
     return (
         <>
@@ -29,7 +29,7 @@ export default function AddMembersScreen({ route }) {
                 ItemSeparatorComponent={Separator}
                 keyExtractor={item => JSON.stringify(item.id)}
                 renderItem={({ item }) => <ListItem title={item.username} subTitle={item.about} imageUri={"https://www.orgachat.com" + item.avatar} onPress={() => handlePress(item)} />}
-            /> : <AppText>No users found</AppText>}
+            /> : !loading &&<AppText>No users found</AppText>}
         </>
     );
 };
