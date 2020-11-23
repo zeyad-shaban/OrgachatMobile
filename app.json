@@ -20,6 +20,9 @@
       "supportsTablet": true
     },
     "android": {
+      "adaptiveIcon": {
+        "backgroundColor": "#3d5998"
+      },
       "useNextNotificationsApi": true,
       "package": "com.orgachat",
       "versionCode": 5
