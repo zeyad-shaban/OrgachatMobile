@@ -20,13 +20,9 @@
       "supportsTablet": true
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./app/assets/adaptive-icon.png",
-        "backgroundColor": "#3d5998"
-      },
       "useNextNotificationsApi": true,
       "package": "com.orgachat",
-      "versionCode": 4
+      "versionCode": 5
     },
     "web": {
       "favicon": "./app/assets/favicon.png"
