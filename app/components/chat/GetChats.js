@@ -24,7 +24,7 @@ export default function GetChats({ apiFunc, BbIcon, BbNavigateTo, navigateTo = "
                 renderItem={({ item }) => (
                     <ListItem
                         title={item.title}
-                        subTitle={item.lastMessagge}
+                        subTitle={item.lastMessage}
                         imageUri={"https://www.orgachat.com" + item.imageUri}
                         onPress={() => navigation.navigate(navigateTo, { chat: item })}
                         badge={item.unreadCount > 0 ? item.unreadCount : null}
