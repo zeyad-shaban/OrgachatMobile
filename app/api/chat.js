@@ -15,7 +15,7 @@ const leaveGroup = chatId => client.get(`/chat/groups/leave_group/${chatId}/`)
 
 // Channels
 const createChannel = (title, chatId) => client.post(`/chat/groups/${chatId}/channels/create/`, { title });
-const toggleMuteChannel = channelId => client.get(`/chat/groups/${channelId}/channels/toggle_mute/`);
+const toggleMuteChannel = channelId => client.get(`/chat/groups/channels/toggle_mute_channel/${channelId}/`);
 
 export default {
     createFriendChat,

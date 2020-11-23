@@ -6,6 +6,7 @@ import { Image } from 'react-native-expo-image-cache';
 import colors from '../../config/colors';
 import Text from '../text/Text';
 import Icon from '../Icon';
+import RightBadge from "../RightBadge";
 
 export default function ListItem({
     title,
@@ -19,7 +20,7 @@ export default function ListItem({
     backgroundColor,
     size = 60,
     textColor = "black",
-    badge=0,
+    badge,
     badgeColor = colors.primary
 }) {
     return (
@@ -33,10 +34,10 @@ export default function ListItem({
                         <Text style={[styles.title, { color: textColor }]} numberOfLines={1}>{title}</Text>
                         <Text style={[styles.subTitle, { color: textColor }]} numberOfLines={2}>{subTitle}</Text>
                     </View>
-                    {badge > 0 && 
-                            <View style={[styles.badge, { backgroundColor: badgeColor }]}>
-                                <Text style={styles.badgeText}>{badge}</Text>
-                            </View>
+                    {badge && 
+                        <RightBadge backgroundColor={badgeColor} content={badge}>
+                            <Text style={[styles.badgeText, {color: 'white'}]}>{badge}</Text>
+                        </RightBadge>
                     }
                 </View>
             </TouchableHighlight>
@@ -61,17 +62,5 @@ const styles = StyleSheet.create({
         color: "#555",
         marginTop: 3
     },
-    badge: {
-        width: 30,
-        height: 30,
-        borderRadius: 200,
-        justifyContent: "center",
-        alignItems: "center",
-        position: "absolute",
-        right: 20,
-        alignSelf: "center"
-    },
-    badgeText: {
-        color: "white"
-    }
+    
 });
