@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet, View, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { Audio } from 'expo-av';
@@ -9,8 +9,9 @@ import TextInput from '../inputs/TextInput';
 import useRecord from "../../hooks/useRecord";
 import logger from "../../utility/logger";
 
-export default function SendMessage({ handleSubmit, text, setText, placeholder }) {
+export default function SendMessage({ handleSubmit, placeholder }) {
     const { isRecording, handleRecord } = useRecord(handleUpload);
+    const [text, setText] = useState(() => { return ""; });
 
     async function handleUpload({ uri }) {
         // const sound = new Audio.Sound();
@@ -37,7 +38,7 @@ export default function SendMessage({ handleSubmit, text, setText, placeholder }
             <View style={styles.sendContainer}>
 
                 {text.length > 0 ?
-                    <TouchableOpacity onPress={handleSubmit}>
+                    <TouchableOpacity onPress={() => {handleSubmit(text); return setText("")}}>
                         <Icon name="send" size={40} color="white" backgroundColor={colors.primary} />
                     </TouchableOpacity>
                     :

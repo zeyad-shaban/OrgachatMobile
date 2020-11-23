@@ -13,37 +13,51 @@ import ActivityIndicator from '../components/ActivityIndicator';
 import settings from "../config/settings";
 
 export default function ChatScreen({ route }) {
+    const chatId = route.params.chat.id;
     const { user } = useAuth();
-    const { data: chat, loading } = useApi(chatApi.getChat, { chatId: route.params.chat.id, channelId: route.params.channelId });
-    const [text, setText] = useState(() => { return ""; });
+    const [chat, setChat] = useState({});
+    const [loading, setLoading] = useState(false);
     const [optionsVisible, setOptionsVisible] = useState(() => false);
-    const [chatSocket, setChatSocket] = useState(new WebSocket(`${settings.wsUrl}chat/${chat.id}/?userId=${user.id}`));
-    const [messages, setMessages] = useState(() => chat.messages);
+    const [messages, setMessages] = useState([]);
+    const chatSocket = new WebSocket(`${settings.wsUrl}chat/${chatId}/?userId=${user.id}`);
+
+
+    // Load & Join & Leave Room
     useEffect(() => {
-        setChatSocket(new WebSocket(`${settings.wsUrl}chat/${chat.id}/?userId=${user.id}`));
-        setMessages(chat.messages);
-    }, [chat]);
-    chatSocket.onmessage = e => {
-        // todo show new messages onmessage
-        const data = JSON.parse(e.data);
-        setMessages([...messages, data.message]);
-    };
-    const handleSubmit = () => {
-        chatSocket.send(JSON.stringify({
+        chatSocket.onopen = async () => {
+            setLoading(true);
+            const { data } = await chatApi.getChat({ chatId: chatId, channelId: route.params.channelId });
+            setLoading(false);
+            setChat(data);
+            setMessages([...data.messages]);
+        };
+
+        return () => {
+            chatSocket.close();
+            return chatSocket.removeEventListener();
+        };
+    }, []);
+
+
+
+    const handleSendMessage = text => chatSocket.send(
+        JSON.stringify({
             text: text,
             channelId: chat.channel ? chat.channel.id : "undefined",
-        }));
-        setText("");
-    };
+        })
+    );
+        chatSocket.onmessage = e => {
+            const { message } = JSON.parse(e.data);
+            setMessages([...messages, message]);
+        };
 
     return (
         <>
-            {chat.type == 'group' && <GroupOptionsScreen visible={optionsVisible} setVisible={setOptionsVisible} chat={chat} />}
+            {chat.type === 'group' && <GroupOptionsScreen visible={optionsVisible} setVisible={setOptionsVisible} chat={chat} />}
             <View style={styles.container}>
                 <ChatHeader title={chat.title} imageUri={"https://www.orgachat.com" + chat.imageUri} onPress={chat.type == 'group' ? () => setOptionsVisible(true) : null} />
+                <ActivityIndicator animating={loading} full={true} />
                 <View style={styles.messagesContainer}>
-                    <ActivityIndicator animating={loading} />
-                    {/* // todo start from bottom instead of top */}
                     <FlatList
                         data={messages}
                         keyExtractor={item => JSON.stringify(item.id)}
@@ -53,7 +67,7 @@ export default function ChatScreen({ route }) {
                     />
                 </View>
                 <View style={styles.inputContainer}>
-                    <SendMessage text={text} setText={setText} handleSubmit={handleSubmit} placeholder={chat.channel ? `#${chat.channel.title} channel` : "Write your message"} />
+                    <SendMessage handleSubmit={handleSendMessage} placeholder={chat.channel ? `#${chat.channel.title} channel` : "Write your message"} />
                 </View>
             </View>
         </>

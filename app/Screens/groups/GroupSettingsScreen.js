@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Alert, FlatList, StyleSheet, View } from 'react-native';
 
 import ListItem from '../../components/lists/ListItem';
@@ -11,6 +11,7 @@ import chatApi from '../../api/chat';
 
 export default function GroupSettingsScreen({ route, navigation }) {
     const chat = route.params.chat;
+    const [refreshing, setRefreshing] = useState(false)
 
     return (
         <View style={styles.container}>
@@ -22,6 +23,8 @@ export default function GroupSettingsScreen({ route, navigation }) {
                     data={chat.chatters}
                     keyExtractor={item => JSON.stringify(item.id)}
                     ItemSeparatorComponent={Separator}
+                    onRefresh={() => chat.chatters}
+                    refreshing={refreshing}
                     renderItem={({ item }) => (
                         <>
                             <ListItem title={item.username} subTitle={item.about} imageUri={`https://www.orgachat.com${item.avatar}`} />
@@ -34,7 +37,7 @@ export default function GroupSettingsScreen({ route, navigation }) {
                     iconName="account-plus"
                     backgroundColor={colors.warning}
                     title="Leave group"
-                    onPress={() => { chatApi.leaveGroup(chat.id); Alert.alert("Left group", "it may take some time to show on your device"); navigation.navigate('Friends') }}
+                    onPress={() => { chatApi.leaveGroup(chat.id);; navigation.navigate('Friends') }}
                 />
             </Section>
         </View>

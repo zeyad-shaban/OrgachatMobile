@@ -36,7 +36,7 @@ export default function GroupOptionsScreen({ visible, setVisible, chat }) {
     return (
         <Modal visible={visible} animationType="slide">
             <Button title="Close" onPress={() => setVisible(false)} />
-            <ListItem iconName="settings" title='Settings' onPress={() => navigation.navigate("GroupSettings", { chat })} />
+            <ListItem iconName="settings" title='Settings' onPress={() => {navigation.navigate("GroupSettings", { chat }); return setVisible(false)}} />
             <View style={styles.container}>
                 <TextInput value={channelTitle} onChangeText={text => setChannelTitle(text)} placeholder="Add a channel" width="70%" maxLength={30} />
                 <IconButton name="plus" backgroundColor={colors.primary} onPress={handleSaveChannel} />

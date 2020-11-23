@@ -25,7 +25,7 @@ const useRecord = (handleUpload, uploadParams) => {
             return setIsRecording(true);
         } catch (error) {
             alert("Error Occured");
-            logger.log(error);
+            logger.log("Error recording voice message: " + error);
         }
     };
     return { isRecording, handleRecord };

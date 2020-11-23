@@ -31,12 +31,6 @@ export default function AccountScreen({ navigation }) {
             <ListCard>
                 <ListItem title="Log Out" ImageComponent={<Icon name="logout" backgroundColor="#ffe66d" />} onPress={handleLogout} />
             </ListCard>
-            {/* // todo remove this shit! */}
-            <Separator />
-            <SmallText>Known issues:</SmallText>
-            <SmallText>- Restart the app to see new friends and groups</SmallText>
-            <SmallText>- Relogin to your account to see updated username or about.</SmallText>
-            <Text>To report a problem: officialorgachat@gmail.com</Text>
         </>
     );
 }

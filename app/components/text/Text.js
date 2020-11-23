@@ -10,6 +10,6 @@ export default function AppText({ style, children, ...otherProps }) {
 const styles = StyleSheet.create({
     text: {
         fontSize: 16,
-        fontFamily: Platform.OS === "android" ? "Roboto" : "Open Sans",
+        fontFamily: Platform.OS === "android" ? "Roboto" : "Helvetica",
     }
 })
