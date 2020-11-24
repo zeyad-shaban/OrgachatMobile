@@ -42,14 +42,23 @@ export default function ChatScreen({ route }) {
 
     const handleSendMessage = text => chatSocket.send(
         JSON.stringify({
-            text: text,
+            text,
             channelId: chat.channel ? chat.channel.id : "undefined",
         })
     );
-        chatSocket.onmessage = e => {
-            const { message } = JSON.parse(e.data);
-            setMessages([...messages, message]);
-        };
+
+    const handleUpload = (fd, type) => chatSocket.send(
+        JSON.stringify({
+            fd,
+            type,
+            channelId: chat.channel ? chat.channel.id : "undefined",
+        })
+    );
+
+    chatSocket.onmessage = e => {
+        const { message } = JSON.parse(e.data);
+        setMessages([...messages, message]);
+    };
 
     return (
         <>
@@ -62,12 +71,15 @@ export default function ChatScreen({ route }) {
                         data={messages}
                         keyExtractor={item => JSON.stringify(item.id)}
                         renderItem={({ item }) => (
-                            <Message sender={item.user} channel={item.channel} type={chat.type}>{item.isText ? <Text>{item.content}</Text> : <></>}</Message>
+                            <Message sender={item.user} channel={item.channel} type={chat.type}>{<Text>{item.content}</Text>}</Message>
                         )}
                     />
                 </View>
                 <View style={styles.inputContainer}>
-                    <SendMessage handleSubmit={handleSendMessage} placeholder={chat.channel ? `#${chat.channel.title} channel` : "Write your message"} />
+                    <SendMessage handleSubmit={handleSendMessage}
+                        handleUpload={handleUpload}
+                        placeholder={chat.channel ? `#${chat.channel.title} channel` : "Write your message"}
+                    />
                 </View>
             </View>
         </>
@@ -80,7 +92,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     messagesContainer: {
-        marginBottom: 50,
+        marginBottom: 110,
     },
     inputContainer: {
         position: "absolute",
