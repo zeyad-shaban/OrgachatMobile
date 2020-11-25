@@ -32,7 +32,7 @@ export default function ListItem({
                     {iconName && <Icon name={iconName} backgroundColor={backgroundColor} />}
                     <View style={styles.listText}>
                         <Text style={[styles.title, { color: textColor }]} numberOfLines={1}>{title}</Text>
-                        <Text style={[styles.subTitle, { color: textColor }]} numberOfLines={2}>{subTitle}</Text>
+                        <Text style={[styles.subTitle, { color: textColor }]} numberOfLines={1}>{subTitle}</Text>
                     </View>
                     {badge && 
                         <RightBadge backgroundColor={badgeColor} content={badge}>
@@ -59,8 +59,8 @@ const styles = StyleSheet.create({
         fontWeight: "600",
     },
     subTitle: {
-        color: "#555",
-        marginTop: 3
+        marginTop: 3,
+        fontSize: 14,
     },
     
 });

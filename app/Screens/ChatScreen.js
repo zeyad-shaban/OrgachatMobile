@@ -60,11 +60,23 @@ export default function ChatScreen({ route }) {
         setMessages([...messages, message]);
     };
 
+    const getSubtitle = () => {
+        if (chat.type === 'friend') {
+            otherChatter = chat.chatters.filter(c => c.id !== user.id);
+            return otherChatter[0].last_seen === '0s ago' ? 'Online' : otherChatter[0].last_seen;
+        }
+        if (chat.chatters) {
+            let output = [];
+            chat.chatters.slice(0, 3).forEach(c => output.push(c.username))
+            return output.join(', ');
+        }
+    };
+
     return (
         <>
             {chat.type === 'group' && <GroupOptionsScreen visible={optionsVisible} setVisible={setOptionsVisible} chat={chat} />}
             <View style={styles.container}>
-                <ChatHeader title={chat.title} imageUri={"https://www.orgachat.com" + chat.imageUri} onPress={chat.type == 'group' ? () => setOptionsVisible(true) : null} />
+                <ChatHeader title={chat.title} subTitle={getSubtitle()} imageUri={"https://www.orgachat.com" + chat.imageUri} onPress={chat.type == 'group' ? () => setOptionsVisible(true) : null} />
                 <ActivityIndicator animating={loading} full={true} />
                 <View style={styles.messagesContainer}>
                     <FlatList

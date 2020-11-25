@@ -10,10 +10,11 @@ import GroupsNavigator from './GroupsNavigator';
 import AccountNavigator from "./AccountNavigator";
 import logger from "../utility/logger";
 import expoPushTokensApi from "../api/expoPushTokens";
+import authApi from "../api/auth";
 
 const Tab = createBottomTabNavigator();
 const AppNavigator = () => {
-    registerForPushNotifications = async () => {
+    const registerForPushNotifications = async () => {
         const { granted } = await Permissions.askAsync(Permissions.NOTIFICATIONS);
         if (!granted) return;
         try {
@@ -23,8 +24,11 @@ const AppNavigator = () => {
             logger.log("Error getting Expo Push Token: " + error)
         }
     };
+
+    
     useEffect(() => {
         registerForPushNotifications();
+        authApi.updateLastSeen()
     }, []);
     return (
         <Tab.Navigator
