@@ -10,41 +10,65 @@ import Icon from '../Icon';
 import TextInput from '../inputs/TextInput';
 import useRecord from "../../hooks/useRecord";
 import logger from "../../utility/logger";
-import chatApi from "../../api/chat";
 
 export default function SendMessage({ handleSubmit, handleUpload, placeholder }) {
     const { isRecording, handleRecord } = useRecord(handleSendRecord);
     const [text, setText] = useState(() => { return ""; });
     const [showUpload, setShowUpload] = useState(false);
 
-    async function handleSendRecord({ uri }) {
-        // const sound = new Audio.Sound();
-        // try {
-        //     await sound.loadAsync(require('../../assets/notif.wav'));
-        //     await sound.playAsync();
-        //     alert("SOUND IS CURRENTLY PLAYING");
-        //     return await sound.unloadAsync();
-        // } catch (error) {
-        //     logger.log(error);
-        // }
-    };
-
-    const handleImageUpload = async () => {
-        const { granted } = await ImagePicker.requestCameraRollPermissionsAsync();
-        if (!granted) return;
+    const handleFileUpload = async (readableType, uploadedUri = null) => {
         try {
-            const { cancelled, uri } = await ImagePicker.launchImageLibraryAsync({mediaTypes: ImagePicker.MediaTypeOptions.Images});
-            if (!cancelled) {
-                const fd = new FormData();
-                fd.append('uri', uri)
-                handleUpload(fd, 'image')
+            // -----upload from device-----
+            if (readableType !== 'audio') {
+                alert("Nope, it's not an audio");
+                const { granted } = await ImagePicker.requestCameraRollPermissionsAsync();
+                if (!granted) return;
+
+                var mediaTypes;
+                if (readableType === 'image') mediaTypes = ImagePicker.MediaTypeOptions.Images;
+                else if (readableType === 'video') mediaTypes = ImagePicker.MediaTypeOptions.Videos;
+                else if (readableType === 'document') mediaTypes = ImagePicker.MediaTypeOptions.All;
+
+                var { cancelled, uri } = await ImagePicker.launchImageLibraryAsync({ mediaTypes: mediaTypes });
             }
+            // ------END upload from device
+
+            // -----audio from device-------¸
+            else if (readableType === 'audio' && !uploadedUri) {
+                alert('UPLOADING AUDIO FROM DEVICE still under developing');
+            }
+            // -----END audio from device-------¸
+
+            else if (readableType === 'audio' && uploadedUri) {
+                // ------send recorded audio-------
+                var uri = uploadedUri;
+                // todo add ability to stop recortding
+                var cancelled = false;
+            }
+
+            // ------save file-----
+            if (cancelled) return;
+
+            const name = uri.split('/').pop();
+            const match = /\.(\w+)$/.exec(name);
+            const type = match ? `${readableType}/${match[1]}` : readableType;
+
+            const fd = new FormData();
+            fd.append('file', { uri, name, type });
+            handleUpload(fd, readableType);
+            // -----END save file----
 
         } catch (error) {
             alert("Error occured");
-            logger.log("Error sending image: " + error);
+            logger.log(`Error sending ${readableType}: ${error}`);
         }
     };
+
+
+    function handleSendRecord({ uri }) {
+        handleFileUpload('audio', uri);
+    }
+
 
     return (
         <View style={styles.container}>
@@ -66,11 +90,15 @@ export default function SendMessage({ handleSubmit, handleUpload, placeholder })
                     <>
                         {showUpload && <View style={styles.uploadContainer}>
                             <Icon name="file" backgroundColor={colors.secondary} size={50} label="Document" />
-                            <TouchableOpacity onPress={handleImageUpload}>
+                            <TouchableOpacity onPress={() => handleFileUpload('image')}>
                                 <Icon name="image" backgroundColor={colors.primary} size={50} label="Image" />
                             </TouchableOpacity>
-                            <Icon name="video" backgroundColor={colors.danger} size={50} label="Video" />
-                            <Icon name="music" backgroundColor={colors.warning} size={50} label="Sound" />
+                            <TouchableOpacity onPress={() => handleFileUpload('video')}>
+                                <Icon name="video" backgroundColor={colors.danger} size={50} label="Video" />
+                            </TouchableOpacity>
+                            {/* <TouchableOpacity onPress={() => handleFileUpload('audio')}>
+                                <Icon name="headphones" backgroundColor={colors.warning} size={50} label="Audio" />
+                            </TouchableOpacity> */}
                         </View>}
                         <View style={styles.attachContainer}>
                             <MaterialCommunityIcons name="attachment" size={30} onPress={() => setShowUpload(!showUpload)} />

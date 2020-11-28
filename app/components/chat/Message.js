@@ -1,16 +1,43 @@
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { Image, StyleSheet, TouchableWithoutFeedback, View } from 'react-native';
+import { Video } from 'expo-av';
+
 import colors from '../../config/colors';
 import useAuth from '../../hooks/useAuth';
 import MessageHeader from './MessageHeader';
+import Text from '../text/Text';
+import settings from "../../config/settings";
 
-export default function Message({ sender, channel=null, children, type = "friend" }) {
+export default function Message({ type = "friend", message }) {
     const { user } = useAuth();
+    const sender = message.user;
+    const channel = message.channel;
+
+    let content = <Text>{message.content}</Text>;
+
+    if (message.type === 'image') content = (
+        <TouchableWithoutFeedback onPress={() => { alert('todo navigate to the image'); }}>
+            <Image source={{ uri: `${settings.apiUrl}${message.content}`, width: 150, height: 150 }} />
+        </TouchableWithoutFeedback>
+    );
+    else if (message.type === 'audio') content = <Text>Audio message</Text>;
+    else if (message.type === 'document') content = (<Text>Document message</Text>);
+    else if (message.type === 'video') content = <Video
+        source={{ uri: `${settings.apiUrl}${message.content}` }}
+        rate={1.0}
+        volume={1.0}
+        isMuted={false}
+        resizeMode="contain"
+        style={{ width: 150, height: 150 }}
+        useNativeControls
+        usePoster
+    />;
+
     return (
         <View style={styles.container}>
             <View style={[styles.content, sender.id === user.id ? styles.self : styles.other]}>
-            {type==="group" && sender.id !== user.id && <MessageHeader username={sender.username} channel={channel} />}
-                {children}
+                {type === "group" && sender.id !== user.id && <MessageHeader username={sender.username} channel={channel} />}
+                {content}
             </View>
         </View>
     );
@@ -36,4 +63,4 @@ const styles = StyleSheet.create({
         backgroundColor: colors.light,
         alignSelf: "flex-start",
     }
-})
+});

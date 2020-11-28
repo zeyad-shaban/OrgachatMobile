@@ -39,7 +39,6 @@ export default function ChatScreen({ route }) {
     }, []);
 
 
-
     const handleSendMessage = text => chatSocket.send(
         JSON.stringify({
             text,
@@ -47,13 +46,10 @@ export default function ChatScreen({ route }) {
         })
     );
 
-    const handleUpload = (fd, type) => chatSocket.send(
-        JSON.stringify({
-            fd,
-            type,
-            channelId: chat.channel ? chat.channel.id : "undefined",
-        })
-    );
+    const handleUpload = async (fd, type) => {
+        if (!chat.id) return;
+        return await chatApi.uploadFile({ fd, chatId: chat.id, channelId: chat.channel ? chat.channel.id : "undefined", type });
+    };
 
     chatSocket.onmessage = e => {
         const { message } = JSON.parse(e.data);
@@ -67,7 +63,7 @@ export default function ChatScreen({ route }) {
         }
         if (chat.chatters) {
             let output = [];
-            chat.chatters.slice(0, 3).forEach(c => output.push(c.username))
+            chat.chatters.slice(0, 3).forEach(c => output.push(c.username));
             return output.join(', ');
         }
     };
@@ -83,7 +79,7 @@ export default function ChatScreen({ route }) {
                         data={messages}
                         keyExtractor={item => JSON.stringify(item.id)}
                         renderItem={({ item }) => (
-                            <Message sender={item.user} channel={item.channel} type={chat.type}>{<Text>{item.content}</Text>}</Message>
+                            <Message type={chat.type} message={item} />
                         )}
                     />
                 </View>

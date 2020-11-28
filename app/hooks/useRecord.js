@@ -8,7 +8,6 @@ const useRecord = (handleUpload, uploadParams) => {
     const [recording, setRecording] = useState(new Audio.Recording());
 
     const handleRecord = async () => {
-        alert("The microphone will be aviable in the next update");
         const { granted } = await Audio.requestPermissionsAsync();
         if (!granted) return;
 
