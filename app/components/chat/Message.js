@@ -7,6 +7,7 @@ import useAuth from '../../hooks/useAuth';
 import MessageHeader from './MessageHeader';
 import Text from '../text/Text';
 import settings from "../../config/settings";
+import Audio from "../Audio";
 
 export default function Message({ type = "friend", message }) {
     const { user } = useAuth();
@@ -20,8 +21,8 @@ export default function Message({ type = "friend", message }) {
             <Image source={{ uri: `${settings.apiUrl}${message.content}`, width: 150, height: 150 }} />
         </TouchableWithoutFeedback>
     );
-    else if (message.type === 'audio') content = <Text>Audio message</Text>;
-    else if (message.type === 'document') content = (<Text>Document message</Text>);
+    else if (message.type === 'audio') content = <Audio uri={`${settings.apiUrl}${message.content}`} />;
+    else if (message.type === 'document') content = (<Text>Orgachat: This is a document message 🗂, sorry we are still working on this 🤧</Text>);
     else if (message.type === 'video') content = <Video
         source={{ uri: `${settings.apiUrl}${message.content}` }}
         rate={1.0}

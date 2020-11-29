@@ -20,7 +20,6 @@ export default function SendMessage({ handleSubmit, handleUpload, placeholder })
         try {
             // -----upload from device-----
             if (readableType !== 'audio') {
-                alert("Nope, it's not an audio");
                 const { granted } = await ImagePicker.requestCameraRollPermissionsAsync();
                 if (!granted) return;
 
@@ -29,7 +28,8 @@ export default function SendMessage({ handleSubmit, handleUpload, placeholder })
                 else if (readableType === 'video') mediaTypes = ImagePicker.MediaTypeOptions.Videos;
                 else if (readableType === 'document') mediaTypes = ImagePicker.MediaTypeOptions.All;
 
-                var { cancelled, uri } = await ImagePicker.launchImageLibraryAsync({ mediaTypes: mediaTypes });
+                var { uri, cancelled } = await ImagePicker.launchImageLibraryAsync({ mediaTypes: mediaTypes });
+                if (cancelled) return
             }
             // ------END upload from device
 
@@ -43,11 +43,9 @@ export default function SendMessage({ handleSubmit, handleUpload, placeholder })
                 // ------send recorded audio-------
                 var uri = uploadedUri;
                 // todo add ability to stop recortding
-                var cancelled = false;
             }
 
             // ------save file-----
-            if (cancelled) return;
 
             const name = uri.split('/').pop();
             const match = /\.(\w+)$/.exec(name);
