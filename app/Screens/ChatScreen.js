@@ -44,11 +44,15 @@ export default function ChatScreen({ route }) {
             text,
             channelId: chat.channel ? chat.channel.id : "undefined",
         })
-    );
-
-    const handleUpload = async (fd, type) => {
-        if (!chat.id) return;
-        return await chatApi.uploadFile({ fd, chatId: chat.id, channelId: chat.channel ? chat.channel.id : "undefined", type });
+        );
+        
+        const handleUpload = async (fd, type) => {
+            if (!chat.id) return;
+            const { data: message } = await chatApi.uploadFile({ fd, chatId: chat.id, channelId: chat.channel ? chat.channel.id : "undefined", type });
+            chatSocket.send(JSON.stringify({
+                message,
+                channelId: chat.channel ? chat.channel.id : "undefined",
+        }))
     };
 
     chatSocket.onmessage = e => {
