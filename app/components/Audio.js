@@ -14,10 +14,17 @@ export default function AppAudio({ uri }) {
 
     const playAudioHandler = async () => {
         if (loaded) {
-            playing ? await sound.pauseAsync() : await sound.playAsync();
+            if (playing) {
+                await sound.pauseAsync();
+                await sound.unloadAsync();
+                setLoaded(false)
+            } else {
+                await sound.playAsync();
+            }
             setPlaying(!playing);
         } else {
             try {
+                await sound.unloadAsync();
                 await sound.loadAsync({ uri });
                 await Audio.setAudioModeAsync({ staysActiveInBackground: true });
 
