@@ -32,7 +32,9 @@ export default function GroupOptionsScreen({ visible, setVisible, chat }) {
             id: channels && channels.length > 0 ? channels[channels.length - 1].id + 1 : 1,
             title: channelTitle,
         };
+        setChannelTitle('')
         setChannels([channel, ...channels]);
+        
         return;
     };
     return (

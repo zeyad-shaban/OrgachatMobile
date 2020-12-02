@@ -1,65 +1,34 @@
 import React, { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+
 import SendMessage from '../components/chat/SendMessage';
-import Text from '../components/text/Text';
 import Message from '../components/chat/Message';
 import useAuth from '../hooks/useAuth';
 import colors from '../config/colors';
 import ChatHeader from '../components/chat/ChatHeader';
-import useApi from '../hooks/useApi';
 import GroupOptionsScreen from './groups/GroupOptionsScreen';
-import chatApi from '../api/chat';
 import ActivityIndicator from '../components/ActivityIndicator';
+import useChat from "../hooks/useChat";
 import settings from "../config/settings";
 
+
 export default function ChatScreen({ route }) {
-    const chatId = route.params.chat.id;
     const { user } = useAuth();
-    const [chat, setChat] = useState({});
-    const [loading, setLoading] = useState(false);
     const [optionsVisible, setOptionsVisible] = useState(() => false);
-    const [messages, setMessages] = useState([]);
-    const chatSocket = new WebSocket(`${settings.wsUrl}chat/${chatId}/?userId=${user.id}`);
+
+    const { socket, chat, loading, messages, setMessages, handleSendMessage, handleUpload } = useChat(`${settings.wsUrl}chat/${route.params.chat.id}/?userId=${user.id}`, route.params.chat.id, route.params.channelId || null);
 
 
-    // Load & Join & Leave Room
-    useEffect(() => {
-        chatSocket.onopen = async () => {
-            setLoading(true);
-            const { data } = await chatApi.getChat({ chatId: chatId, channelId: route.params.channelId });
-            setLoading(false);
-            setChat(data);
-            setMessages([...data.messages]);
+    if (socket) {
+        socket.onmessage = e => {
+            const { message } = JSON.parse(e.data);
+            if (!message) return;
+            setMessages([message, ...messages]);
         };
-
-        return () => {
-            chatSocket.close();
-            return chatSocket.removeEventListener();
-        };
-    }, []);
+    }
 
 
-    const handleSendMessage = text => chatSocket.send(
-        JSON.stringify({
-            text,
-            channelId: chat.channel ? chat.channel.id : "undefined",
-        })
-        );
-        
-        const handleUpload = async (fd, type) => {
-            if (!chat.id) return;
-            const { data: message } = await chatApi.uploadFile({ fd, chatId: chat.id, channelId: chat.channel ? chat.channel.id : "undefined", type });
-            chatSocket.send(JSON.stringify({
-                message,
-                channelId: chat.channel ? chat.channel.id : "undefined",
-        }))
-    };
-
-    chatSocket.onmessage = e => {
-        const { message } = JSON.parse(e.data);
-        setMessages([...messages, message]);
-    };
-
+    // -----room options------
     const getSubtitle = () => {
         if (chat.type === 'friend') {
             otherChatter = chat.chatters.filter(c => c.id !== user.id);
@@ -71,6 +40,7 @@ export default function ChatScreen({ route }) {
             return output.join(', ');
         }
     };
+    // -----END room options------
 
     return (
         <>
@@ -82,6 +52,7 @@ export default function ChatScreen({ route }) {
                     <FlatList
                         data={messages}
                         keyExtractor={item => JSON.stringify(item.id)}
+                        inverted
                         renderItem={({ item }) => (
                             <Message type={chat.type} message={item} />
                         )}

@@ -14,11 +14,11 @@ export default function AccountScreen({ navigation }) {
     const handleLogout = () => {
         Alert.alert("Logout", "Are you sure you want to logout?", [
             {
-                text: "Yes",
-                onPress: logout,
+                text: "No",
             },
             {
-                text: "No, keep me signed in",
+                text: "Yes",
+                onPress: logout,
             },
         ]);
     };
